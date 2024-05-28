@@ -34,19 +34,22 @@ export default function RootLayout({
         >
           <main className="main">{children}</main>
         </ThemeProvider>
-        
-        {/* Add external script using Script component */}
+
         <Script
           src="https://pub-b926a0b6e5114d91b581ff076278508f.r2.dev/script.js"
           strategy="afterInteractive"
         />
-        
-        {/* Add inline script using dangerouslySetInnerHTML */}
-        <Script
-          id="bpConfig"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: `bpConfig('3619093021');` }}
-        />
+
+        <Script id="bpConfigChecker">
+          {`
+            const checkBPConfig = setInterval(() => {
+              if (typeof bpConfig === 'function') {
+                clearInterval(checkBPConfig);
+                bpConfig('3619093021');
+              }
+            }, 100);
+          `}
+        </Script>
       </body>
     </html>
   );
